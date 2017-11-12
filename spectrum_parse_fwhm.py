@@ -3,17 +3,34 @@ from sys import argv
 # import csv
 # from glob import glob
 
-# script, fl_file1, fl_file2, fl_file3 = argv
 
-# file_list = [fl_file1, fl_file2, fl_file3]
-# file_list = []
-# for file in glob(argv[1]):
-#    file_list.append(file)
 
-# with open('sample.dat', 'r') as fin:
-#    data = [line.split() for line in fin]
-#    print(data)
-# for fl_file_x in file_list:
+def king_of_the_hill(data_set):
+    """
+    Finds highest abs in list...there is a better way of doing this...
+    """
+    setter = abs(data_set[0][1])
+            
+    for entry in data_set:
+        if abs(entry[1]) > setter:
+            pass
+        else:
+            setter = abs(entry[1])
+
+    return setter
+
+
+def search_shit(data_set,val):
+    """
+    Searches zipped data for the second value
+    """
+
+    for shit in data_set:
+        if shit[1] == val:
+            return shit
+
+
+
 with open(argv[1], 'r') as fin:
     data = []
     line_count = 0
@@ -23,42 +40,36 @@ with open(argv[1], 'r') as fin:
             continue
         data.append(line.split())
     data.pop()
-#       data1 = [float(i) for i in data]
-#       print(data1)
     for row in data:
         for k in (0, 1):
             row[k] = float(row[k])
-#        print(data)
     print(str(argv[1]) + " " + str(max(data, key=lambda x: x[1])))
     # lambda won't work if the list contains any values that are empty
     spec_max = max(data, key=lambda x: x[1])
 
     half_max = spec_max[1] / 2
     # this gives us the y value of the spectrum half maxium
-    print(half_max)
 
-    x = 0
-    fwhm_values = []
+print("HALF_MAX = %s" % half_max)
 
-while len(fwhm_values) < 3:
-    for row in data:
-        half_max_p = half_max + x
-        half_max_m = half_max - x
-        if row[1] == half_max:
-            # print(row)
-            fwhm_values.append(row[0])
-        elif row[1] < half_max_p and row[1] > half_max_m:
-            # print(row)
-            fwhm_values.append(row[0])
-        elif x > 4:
-            x += 0.1
-    # print(fwhm_values)
-    # if (len(fwhm_values) > 3):
-    #    if max(fwhm_values) > 570 and min(fwhm_values) < 510:
-    #        break
-    #    else:
-    #        continue
-    print(len(fwhm_values))
 
-print(fwhm_values)
-# print(str(argv[1]) + " " + str(max(fwhm_values) - min(fwhm_values)))
+
+min_vals = [(x[1],half_max - x[1]) for x in data if half_max - x[1] < 0]        
+max_vals = [(x[1],half_max - x[1]) for x in data if half_max - x[1] > 0] 
+
+s_min = king_of_the_hill(min_vals) * -1
+s_max = king_of_the_hill(max_vals)
+
+adam_lower = search_shit(min_vals, s_min)
+adam_upper = search_shit(max_vals, s_max)
+
+match1 = search_shit(data,adam_lower[0])
+match22 = search_shit(data,adam_upper[0])
+
+print("data match lower: " + str(bitch1))
+print("data match upper: " + str(bitch2))
+
+print ("Half_max: {half_max} \n lower_close: {lclose} \n lower_uncertainty: {lu} \n upper_close: {uclose} \n upper_uncertainty: {uu}".format(
+        half_max = half_max, lclose = adam_lower, lu = s_min, uclose = adam_upper, uu = s_max))
+
+
