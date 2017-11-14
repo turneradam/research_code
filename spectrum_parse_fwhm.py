@@ -65,5 +65,10 @@ match22 = search_shit(data,adam_upper[0])
 # print("data match lower: " + str(match1))
 # print("data match upper: " + str(match22))
 
-print ("Spec_max: {spec_max} \n Half_max: {half_max} \n lower_close: {lclose} \n lower_uncertainty: {lu} \n upper_close: {uclose} \n upper_uncertainty: {uu}".format(
+if argv[2] == '1':
+    print (str(argv[1]) + "\n Spec_max: {spec_max} \n Half_max: {half_max} \n lower_close: {lclose} \n lower_uncertainty: {lu} \n upper_close: {uclose} \n upper_uncertainty: {uu}".format(
         spec_max = spec_max, half_max = half_max, lclose = adam_lower, lu = s_min, uclose = adam_upper, uu = s_max))
+elif argv[2] == '0':
+    print (str(argv[1]) + " Spec_max: {spec_max} Half_max: {half_max}".format(spec_max = spec_max[0], half_max = half_max))
+else:
+    print("Please specify output verbose level, 1 is most verbose, 0 is minimally verbose.")
