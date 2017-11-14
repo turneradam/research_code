@@ -3,8 +3,6 @@ from sys import argv
 # import csv
 # from glob import glob
 
-
-
 def king_of_the_hill(data_set):
     """
     Finds highest abs in list...there is a better way of doing this...
@@ -19,12 +17,10 @@ def king_of_the_hill(data_set):
 
     return setter
 
-
-def search_shit(data_set,val):
+def search_shit(data_set, val):
     """
     Searches zipped data for the second value
     """
-
     for shit in data_set:
         if shit[1] == val:
             return shit
@@ -43,14 +39,14 @@ with open(argv[1], 'r') as fin:
     for row in data:
         for k in (0, 1):
             row[k] = float(row[k])
-    print(str(argv[1]) + " " + str(max(data, key=lambda x: x[1])))
+    # print(str(argv[1]) + " " + str(max(data, key=lambda x: x[1])))
     # lambda won't work if the list contains any values that are empty
     spec_max = max(data, key=lambda x: x[1])
 
     half_max = spec_max[1] / 2
     # this gives us the y value of the spectrum half maxium
 
-print("HALF_MAX = %s" % half_max)
+# print("HALF_MAX = %s" % half_max)
 
 
 
@@ -66,8 +62,8 @@ adam_upper = search_shit(max_vals, s_max)
 match1 = search_shit(data,adam_lower[0])
 match22 = search_shit(data,adam_upper[0])
 
-print("data match lower: " + str(match1))
-print("data match upper: " + str(match22))
+# print("data match lower: " + str(match1))
+# print("data match upper: " + str(match22))
 
-print ("Half_max: {half_max} \n lower_close: {lclose} \n lower_uncertainty: {lu} \n upper_close: {uclose} \n upper_uncertainty: {uu}".format(
-        half_max = half_max, lclose = adam_lower, lu = s_min, uclose = adam_upper, uu = s_max))
+print ("Spec_max: {spec_max} \n Half_max: {half_max} \n lower_close: {lclose} \n lower_uncertainty: {lu} \n upper_close: {uclose} \n upper_uncertainty: {uu}".format(
+        spec_max = spec_max, half_max = half_max, lclose = adam_lower, lu = s_min, uclose = adam_upper, uu = s_max))
