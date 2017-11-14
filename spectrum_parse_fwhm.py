@@ -48,7 +48,7 @@ with open(argv[1], 'r') as fin:
 
 # print("HALF_MAX = %s" % half_max)
 
-
+# maybe this needs to be comparing against spec_max and not half_max?
 
 min_vals = [(x[1],half_max - x[1]) for x in data if half_max - x[1] < 0]        
 max_vals = [(x[1],half_max - x[1]) for x in data if half_max - x[1] > 0] 
@@ -60,15 +60,20 @@ adam_lower = search_shit(min_vals, s_min)
 adam_upper = search_shit(max_vals, s_max)
 
 match1 = search_shit(data,adam_lower[0])
-match22 = search_shit(data,adam_upper[0])
+match2 = search_shit(data,adam_upper[0])
+
+fwhm = match1[0] - match2[0]
 
 # print("data match lower: " + str(match1))
 # print("data match upper: " + str(match22))
 
-if argv[2] == '1':
-    print (str(argv[1]) + "\n Spec_max: {spec_max} \n Half_max: {half_max} \n lower_close: {lclose} \n lower_uncertainty: {lu} \n upper_close: {uclose} \n upper_uncertainty: {uu}".format(
-        spec_max = spec_max, half_max = half_max, lclose = adam_lower, lu = s_min, uclose = adam_upper, uu = s_max))
+if argv[2] == '2':
+    print (str(argv[1]) + "\n Spec_max: {spec_max} \n Half_max: {half_max} \nFWHM: {fwhm} \nlower_close: {lclose} \n lower_uncertainty: {lu} \n upper_close: {uclose} \n upper_uncertainty: {uu}".format(
+        spec_max = spec_max, half_max = half_max, fwhm = fwhm, lclose = adam_lower, lu = s_min, uclose = adam_upper, uu = s_max))
+elif argv[2] == '1':
+    print (str(argv[1]) + "\n Spec_max: {spec_max} \n Half_max: {half_max} \nFWHM: {fwhm} \n lower_close: {lclose} \n lower_xy: {lxy} \n upper_close: {uclose} \n upper_xy: {uxy}".format(
+        spec_max = spec_max, half_max = half_max, fwhm = fwhm, lclose = adam_lower, lxy = match1, uclose = adam_upper, uxy = match2))
 elif argv[2] == '0':
-    print (str(argv[1]) + " Spec_max: {spec_max} Half_max: {half_max}".format(spec_max = spec_max[0], half_max = half_max))
+    print (str(argv[1]) + " Spec_max: {spec_max} FWHM: {fwhm}".format(spec_max = spec_max[0], fwhm = fwhm))
 else:
     print("Please specify output verbose level, 1 is most verbose, 0 is minimally verbose.")
