@@ -42,7 +42,7 @@ with open(argv[1], 'r') as fin:
     # print(str(argv[1]) + " " + str(max(data, key=lambda x: x[1])))
     # lambda won't work if the list contains any values that are empty
     spec_max = max(data, key=lambda x: x[1])
-
+    
     half_max = spec_max[1] / 2
     # this gives us the y value of the spectrum half maxium
 
@@ -66,7 +66,7 @@ fwhm = match1[0] - match2[0]
 # print("data match upper: " + str(match22))
 
 if argv[2] == '2':
-    print (str(argv[1]) + "\n Spec_max: {spec_max} \n Half_max: {half_max} \nFWHM: {fwhm} \nlower_close: {lclose} \n lower_uncertainty: {lu} \n upper_close: {uclose} \n upper_uncertainty: {uu}".format(
+    print (str(argv[1]) + "\n Spec_max: {spec_max} \n Half_max: {half_max} \n aFWHM: {fwhm} \nlower_close: {lclose} \n lower_uncertainty: {lu} \n upper_close: {uclose} \n upper_uncertainty: {uu}".format(
         spec_max = spec_max, half_max = half_max, fwhm = fwhm, lclose = adam_lower, lu = s_min, uclose = adam_upper, uu = s_max))
 elif argv[2] == '1':
     print (str(argv[1]) + "\n Spec_max: {spec_max} \n Half_max: {half_max} \nFWHM: {fwhm} \n lower_close: {lclose} \n lower_xy: {lxy} \n upper_close: {uclose} \n upper_xy: {uxy}".format(
