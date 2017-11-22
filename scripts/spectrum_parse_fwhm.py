@@ -4,8 +4,10 @@ from sys import argv
 # import csv
 # from glob import glob
 
-def input_validator():
+
+def input_validator(func):
     # TODO: Spin this out into a decorator
+    print("checking inputs\n")
     if len(argv) < 2:
         print("Error::: Parse File not defined")
         sys.exit(1)
@@ -13,6 +15,11 @@ def input_validator():
     if OUTPUT_FILE not in os.listdir():
         print("ERROR::: File does not exist")
         sys.exit(1)
+    
+    def wrapped():
+        func()
+
+    return wrapped
         
 
 def king_of_the_hill(data_set):
@@ -62,7 +69,9 @@ def parse_data():
     # this gives us the y value of the spectrum half maxium
 
 # print("HALF_MAX = %s" % half_max)
-def output_fhwm(_hm):
+
+@input_validator
+def output_fhwm(_hm = parse_data()):
     half_max = _hm
     min_vals = [(x[1],half_max - x[1]) for x in data if half_max - x[1] < 0]        
     max_vals = [(x[1],half_max - x[1]) for x in data if half_max - x[1] > 0] 
