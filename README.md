@@ -21,3 +21,5 @@ Architect out the system
 - Modularize the app so it is easier to use.
 
 - Fix the problem that Adam talked about a while back that I can't remember
+
+- Fix fwhm.py so that it splits the data via list[0] rather than list[1]
