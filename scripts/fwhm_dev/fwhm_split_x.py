@@ -8,8 +8,9 @@ def king_of_the_hill(data_set):
     Finds highest abs in list...there is a better way of doing this...
     """
     setter = abs(data_set[0][1])
-            
+    
     for entry in data_set:
+
         if abs(entry[1]) > setter:
             pass
         else:
@@ -46,68 +47,38 @@ with open(argv[1], 'r') as fin:
     half_max = spec_max[1] / 2
     # this gives us the y value of the spectrum half maxium
 
-# cut the spectrum in half vertically
-
-first_vals = [(x[1],half_max - x[1]) for x in data if half_max - x[1] < 0]        
-second_vals = [(x[1],half_max - x[1]) for x in data if half_max - x[1] > 0] 
-
-s_first = king_of_the_hill(first_vals) * -1
-s_second = king_of_the_hill(second_vals)
-
-print(first_vals)
-
-print(s_first)
-
-adam_lower = search_shit(first_vals, s_first)
-adam_upper = search_shit(second_vals, s_second)
-
-print(adam_lower)
-
-# find list xy pair that is closest to the half_max value
-
-match1 = search_shit(data,adam_lower[0])
-match2 = search_shit(data,adam_upper[0])
-
-fwhm = match1[0] - match2[0]
-
 # cut the spectrum in half horizontally
 
-first_half = [(x[1],half_max - x[1]) for x in data if spec_max[0] - x[0] < 0] 
-second_half = [(x[1],half_max - x[1]) for x in data if spec_max[0] - x[0] > 0] 
+first_half = [(x[1],half_max - x[1]) for x in data if spec_max[0] - x[0] > 0] 
+second_half = [(x[1],half_max - x[1]) for x in data if spec_max[0] - x[0] < 0] 
 
-s_first_half = king_of_the_hill(first_half) * -1
+s_first_half = king_of_the_hill(first_half)
 s_second_half = king_of_the_hill(second_half)
 
-print("s_first_half: " + str(s_first_half))
-print("s_second half: " + str(s_second_half))
+first_half_close = search_shit(first_half, s_first_half)
+second_half_close = search_shit(second_half, s_second_half)
 
-adam_first_half = search_shit(first_half, s_first_half)
-adam_second_half = search_shit(second_half, s_second_half)
+first_half_match = search_shit(data,first_half_close[0])
+second_half_match = search_shit(data,second_half_close[0])
 
-print("adam_first_half: " + str(adam_first_half))
-print("adam_second_half: " + str(adam_second_half))
-
-# a_match1 = search_shit(data,adam_first_half[0])
-a_match2 = search_shit(data,adam_second_half[0])
-
-# print(a_match1)
-print(a_match2)
-
-# a_fwhm = a_match1[0] - a_match2[0] 
+fwhm = first_half_match[0] - second_half_match[0] 
 
 # print("data match lower: " + str(match1))
 # print("data match upper: " + str(match22))
 
-if argv[2] == '2':
+if argv[2] == '0':
+    print (str(argv[1]) + " Spec_max: {spec_max} FWHM: {fwhm}".format(spec_max = spec_max, fwhm = fwhm))
+elif argv[2] == '1':
+    print (str(argv[1]) + "\nSpec_max: {spec_max} \nHalf_max: {half_max} \nFWHM: {fwhm} \n lower_close: {lclose} \n lower_xy: {lxy} \n upper_close: {uclose} \n upper_xy: {uxy}".format(
+        spec_max = spec_max, half_max = half_max, fwhm = fwhm, lclose = adam_lower, lxy = match1, uclose = adam_upper, uxy = match2))
+elif argv[2] == '2':
+    print (str(argv[1]) + " Spec_max: {spec_max} FWHM: {fwhm}".format(spec_max = spec_max, fwhm = fwhm))
+elif argv[2] == '3':
+    print (str(argv[1]) + "\nSpec_max: {spec_max} \nHalf_max: {half_max} \nfirst_close: {f_close} \nsecond_close: {s_close} \nfirst_half_match: {fmatch} \nsecond_half_match: {smatch} \nFWHM: {fwhm}".format(
+        spec_max = spec_max, half_max = half_max, f_close = first_half_close, s_close = second_half_close, fmatch = first_half_match, smatch = second_half_match, fwhm = fwhm))
+elif argv[2] == '4':    
     pass
     #print (str(argv[1]) + "\n Spec_max: {spec_max} \n Half_max: {half_max} \nFWHM: {fwhm} \nlower_close: {lclose} \n lower_uncertainty: {lu} \n upper_close: {uclose} \n upper_uncertainty: {uu}".format(
      #   spec_max = spec_max, half_max = half_max, fwhm = fwhm, lclose = adam_lower, lu = s_min, uclose = adam_upper, uu = s_max))
-elif argv[2] == '1':
-    print (str(argv[1]) + "\n Spec_max: {spec_max} \n Half_max: {half_max} \nFWHM: {fwhm} \n lower_close: {lclose} \n lower_xy: {lxy} \n upper_close: {uclose} \n upper_xy: {uxy}".format(
-        spec_max = spec_max, half_max = half_max, fwhm = fwhm, lclose = adam_lower, lxy = match1, uclose = adam_upper, uxy = match2))
-elif argv[2] == '0':
-    print (str(argv[1]) + " Spec_max: {spec_max} FWHM: {fwhm}".format(spec_max = spec_max[0], fwhm = fwhm))
-elif argv[2] == '3':
-    print (str(argv[1]) + " Spec_max: {spec_max} FWHM: {fwhm}".format(spec_max = spec_max, fwhm = fwhm))
 else:
-    print("Please specify output verbose level (2-0), 2 is most verbose, 0 is minimally verbose.")
+    print("Please specify output verbose level (3-0), 3 is most verbose, 0 is minimally verbose.")
