@@ -54,8 +54,14 @@ second_vals = [(x[1],half_max - x[1]) for x in data if half_max - x[1] > 0]
 s_first = king_of_the_hill(first_vals) * -1
 s_second = king_of_the_hill(second_vals)
 
+print(first_vals)
+
+print(s_first)
+
 adam_lower = search_shit(first_vals, s_first)
 adam_upper = search_shit(second_vals, s_second)
+
+print(adam_lower)
 
 # find list xy pair that is closest to the half_max value
 
@@ -63,6 +69,31 @@ match1 = search_shit(data,adam_lower[0])
 match2 = search_shit(data,adam_upper[0])
 
 fwhm = match1[0] - match2[0]
+
+# cut the spectrum in half horizontally
+
+first_half = [(x[1],half_max - x[1]) for x in data if spec_max[0] - x[0] < 0] 
+second_half = [(x[1],half_max - x[1]) for x in data if spec_max[0] - x[0] > 0] 
+
+s_first_half = king_of_the_hill(first_half) * -1
+s_second_half = king_of_the_hill(second_half)
+
+print("s_first_half: " + str(s_first_half))
+print("s_second half: " + str(s_second_half))
+
+adam_first_half = search_shit(first_half, s_first_half)
+adam_second_half = search_shit(second_half, s_second_half)
+
+print("adam_first_half: " + str(adam_first_half))
+print("adam_second_half: " + str(adam_second_half))
+
+# a_match1 = search_shit(data,adam_first_half[0])
+a_match2 = search_shit(data,adam_second_half[0])
+
+# print(a_match1)
+print(a_match2)
+
+# a_fwhm = a_match1[0] - a_match2[0] 
 
 # print("data match lower: " + str(match1))
 # print("data match upper: " + str(match22))
