@@ -65,7 +65,7 @@ def createDict(entry):
         return {removeSpecials(entry_list[0]) : removeSpecials(entry_list[1])}
 
     elif entry[0].isdigit() == True:
-        return tuple(entry.split("\t"))
+        return tuple([float(i) for i in entry.split("\t")])
 
     else:
         return {"dump" : entry}
