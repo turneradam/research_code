@@ -19,6 +19,7 @@ for later use.
 TARGET_FILE = "test_spectrum.txt"
 target_data = open(TARGET_FILE,"r").read()
 OUTPUT_FILE = False
+VERBOSE = False
 
 #ARGV filters
 
@@ -34,7 +35,8 @@ if len(argv) > 1:
             output_index = argv.index("-o") + 1
             OUTPUT_FILE = os.path.join("outputs",argv[output_index])
 
-
+        if flag == "-v":
+            VERBOSE = True
 #Functions
 
 def removeSpecials(_string):
@@ -94,4 +96,8 @@ def create_output_dictionary():
          
 
     return master_dict
+
+if __name__ == "__main__":
+    if VERBOSE:
+        print create_output_dictionary()
 
