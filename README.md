@@ -23,3 +23,15 @@ Architect out the system
 - Fix the problem that Adam talked about a while back that I can't remember
 
 - Fix fwhm.py so that it splits the data via list[0] rather than list[1]
+
+Area normalisation
+
+- Comment the code
+
+- Expand to cover all datasets in file
+
+- Interface with 2D Correlation Spectroscopy
+
+2D Correlation Spectroscopy
+
+- Write something rudimentary that works
