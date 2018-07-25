@@ -1,3 +1,9 @@
+# TODO:
+# 1) Comment code
+# 2) Write normalised data to CSV
+# 3) Determine if trapz or simps is more accurate
+# 4) Loop over all columns in spectra CSV
+
 from sys import argv
 from matplotlib import pyplot as mp
 import pandas as pd
