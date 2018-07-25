@@ -31,7 +31,7 @@ with open(argv[1], 'r') as fin:
     data = []
     line_count = 0
     for line in fin:
-        if line_count < 29:
+        if line_count < 480:
             line_count += 1
             continue
         data.append(line.split())
