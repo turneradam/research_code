@@ -1,6 +1,6 @@
 # TODO:
 # 1) Comment code - DONE
-# 2) Write normalised data to CSV
+# 2) Write normalised data to CSV - DONE
 # 3) Determine if trapz or simps is more accurate - So long as we remain
 # consistent, ie. trapz of trapz data or simps of simps data then the area will
 # be equal to 1. Otherwise we will introduce error.
@@ -10,31 +10,58 @@ from sys import argv
 from matplotlib import pyplot as mp
 import pandas as pd
 import numpy as np
+import os
 from scipy import integrate as sp
 
+def input_validator(func):
+    # TODO: Spin this out into a decorator
+    print("checking inputs\n")
+    if len(argv) < 2:
+        print("Error::: Parse File not defined")
+        sys.exit(1)
+
+    if OUTPUT_FILE not in os.listdir():
+        print("ERROR::: File does not exist")
+        sys.exit(1)
+    
+    def wrapped():
+        func()
+
+    return wrapped
 # Read the csv file, then assign no header so reads first row as data
 spectra = pd.read_csv(argv[1], header=None)
 #print(spectra)
+
+for column in spectra:
+    (spectra[column])
 
 # Assign the first column to X axis values
 x = spectra.iloc[:,0]
 
 # Assign the second colum as y values
-y = spectra.iloc[:,1]
+y = spectra.iloc[:,2]
 
 # Integrate over all the y values using the trapezoidal rule and then normalise
 # by area
-areaT = np.trapz(y)
-y_normT = y / areaT
+def normaliser(y_values):
+    areaS = sp.simps(y_values)
+    y_normS = y_values / areaS
+    return y_normS
 
+for item in spectra.iteritems():
+    print(item) 
+    areaS = sp.simps(item)
+    print(areaS)
+    y_normS = item / areaS
+    print(y_normS)
 # Integrate over all y values using Simpson integration and then normalise by
 # area
-areaS = sp.simps(y)
-y_normS = y / areaS
+#areaS = sp.simps(y)
+#y_normS = y / areaS
 
 # Append X and Y normalised values to a new dataframe
 # Create a list of the values to be in the CSV
-frames = [x,y_normS]
+frames = [x,yNorm]
 # Concatenate the datasets with the x-axis
 results = pd.concat(frames, axis=1, join='outer')
 
