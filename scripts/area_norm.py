@@ -5,6 +5,9 @@
 # consistent, ie. trapz of trapz data or simps of simps data then the area will
 # be equal to 1. Otherwise we will introduce error.
 # 4) Loop over all columns in spectra CSV
+# 5) Split out into decorators
+# 6) functionalise the program
+# 7) Spin this out into separate programs
 
 from sys import argv
 from matplotlib import pyplot as mp
@@ -32,14 +35,11 @@ def input_validator(func):
 spectra = pd.read_csv(argv[1], header=None)
 #print(spectra)
 
-for column in spectra:
-    (spectra[column])
+#for column in spectra:
+#    (spectra[column])
 
 # Assign the first column to X axis values
 x = spectra.iloc[:,0]
-
-# Assign the second colum as y values
-y = spectra.iloc[:,2]
 
 # Integrate over all the y values using the trapezoidal rule and then normalise
 # by area
@@ -48,29 +48,31 @@ def normaliser(y_values):
     y_normS = y_values / areaS
     return y_normS
 
-for item in spectra.iteritems():
-    print(item) 
-    areaS = sp.simps(item)
-    print(areaS)
-    y_normS = item / areaS
-    print(y_normS)
-# Integrate over all y values using Simpson integration and then normalise by
-# area
-#areaS = sp.simps(y)
-#y_normS = y / areaS
+iter_spectra = spectra.to_records()
 
-# Append X and Y normalised values to a new dataframe
-# Create a list of the values to be in the CSV
-frames = [x,yNorm]
-# Concatenate the datasets with the x-axis
-results = pd.concat(frames, axis=1, join='outer')
+normalised_spectra = pd.DataFrame([x]).T
+
+# Do normalisation of the data and then append it to the data frame for all the
+# normalised data. First it sets the index to 1 so as not to normalise the x
+# axis and then iterates over all the columns in the csv appending the relevant
+# value from each row list. Finally the normalised data is appended to the
+# dataframe and the column incrementer is increased.
+col = 1
+while col < len(iter_spectra[0]):
+    spec_data = []
+    for row in iter_spectra:
+        spec_data.append(row[col])
+    spec_data = normaliser(spec_data)
+    spec_data = pd.DataFrame(data=spec_data)
+    normalised_spectra = pd.concat([normalised_spectra,spec_data], join="inner", axis=1)
+    col += 1    
 
 # Write the output of the normalisation to a new CSV file with name
 # $file_area_norm.csv
 # Create the output file name for the CSV
 out_filename = 'out_' + str(argv[1])
 # Write the normalised data to a file with name out_filename.csv
-results.to_csv(out_filename,header=False,index=False)
+normalised_spectra.to_csv(out_filename,header=False,index=False)
 
 # Plot the output of normalisation using both the trapezoidal rule and the
 # Simpson rule
