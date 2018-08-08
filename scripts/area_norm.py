@@ -4,22 +4,21 @@
 # 3) Determine if trapz or simps is more accurate - So long as we remain
 # consistent, ie. trapz of trapz data or simps of simps data then the area will
 # be equal to 1. Otherwise we will introduce error.
-# 4) Loop over all columns in spectra CSV
+# 4) Loop over all columns in spectra CSV - DONE
 # 5) Split out into decorators
-# 6) functionalise the program
+# 6) Modularise the program
 # 7) Spin this out into separate programs
+# 8) First value after x column in output is normalised x axis fix this
 
-from sys import argv
-from matplotlib import pyplot as mp
+import sys
 import pandas as pd
 import numpy as np
-import os
 from scipy import integrate as sp
 
 def input_validator(func):
     # TODO: Spin this out into a decorator
     print("checking inputs\n")
-    if len(argv) < 2:
+    if len(sys.argv) < 2:
         print("Error::: Parse File not defined")
         sys.exit(1)
 
@@ -32,12 +31,9 @@ def input_validator(func):
 
     return wrapped
 # Read the csv file, then assign no header so reads first row as data
-spectra = pd.read_csv(argv[1], header=None)
-#print(spectra)
+spectra = pd.read_csv(sys.argv[1], header=None)
 
-#for column in spectra:
-#    (spectra[column])
-
+print(spectra)
 # Assign the first column to X axis values
 x = spectra.iloc[:,0]
 
@@ -57,7 +53,9 @@ normalised_spectra = pd.DataFrame([x]).T
 # axis and then iterates over all the columns in the csv appending the relevant
 # value from each row list. Finally the normalised data is appended to the
 # dataframe and the column incrementer is increased.
-col = 1
+# By setting col=2 then we avoid normalising the x-axis but this seems like a
+# fudge
+col = 2
 while col < len(iter_spectra[0]):
     spec_data = []
     for row in iter_spectra:
@@ -67,10 +65,11 @@ while col < len(iter_spectra[0]):
     normalised_spectra = pd.concat([normalised_spectra,spec_data], join="inner", axis=1)
     col += 1    
 
+print(normalised_spectra)
 # Write the output of the normalisation to a new CSV file with name
 # $file_area_norm.csv
 # Create the output file name for the CSV
-out_filename = 'out_' + str(argv[1])
+out_filename = 'out_' + str(sys.argv[1])
 # Write the normalised data to a file with name out_filename.csv
 normalised_spectra.to_csv(out_filename,header=False,index=False)
 
