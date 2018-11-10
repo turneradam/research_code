@@ -21,7 +21,6 @@ x = spectra.iloc[:,0]
 
 # Assign the second colum as y values
 y = spectra.iloc[:,1]
-
 # Integrate over all the y values using the trapezoidal rule and then normalise
 # by area
 areaT = np.trapz(y)

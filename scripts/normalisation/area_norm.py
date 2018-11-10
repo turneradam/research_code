@@ -13,6 +13,7 @@
 import sys
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from scipy import integrate as sp
 
 def input_validator(func):
@@ -25,7 +26,7 @@ def input_validator(func):
     if OUTPUT_FILE not in os.listdir():
         print("ERROR::: File does not exist")
         sys.exit(1)
-    
+
     def wrapped():
         func()
 
@@ -44,6 +45,7 @@ def normaliser(y_values):
     y_normS = y_values / areaS
     return y_normS
 
+# Converts dataframe to numpy array
 iter_spectra = spectra.to_records()
 
 normalised_spectra = pd.DataFrame([x]).T
@@ -63,9 +65,9 @@ while col < len(iter_spectra[0]):
     spec_data = normaliser(spec_data)
     spec_data = pd.DataFrame(data=spec_data)
     normalised_spectra = pd.concat([normalised_spectra,spec_data], join="inner", axis=1)
-    col += 1    
+    col += 1
 
-print(normalised_spectra)
+#print(normalised_spectra)
 # Write the output of the normalisation to a new CSV file with name
 # $file_area_norm.csv
 # Create the output file name for the CSV
