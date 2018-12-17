@@ -1,20 +1,15 @@
 import os
 import sys
 import pandas as pd
-import numpy as np
 
 # First line if header, second if none
-csvfile = pd.read_csv(sys.argv[1], header=None)
-#csvfile = pd.read_csv(sys.argv[1])
+#csvfile = pd.read_csv(sys.argv[1], header=None)
+csvfile = pd.read_csv(sys.argv[1])
 
 x = csvfile.iloc[:,0]
 xfile = pd.DataFrame([x]).T
 
 set_file = []
-
-"""
-This method splits a file using pandas but iterating over a
-DataFrame is inefficient
 
 i = 1
 frange = csvfile.shape[1] - 1
@@ -30,16 +25,3 @@ for i in range(frange):
         i += 1
     set = pd.DataFrame(set_file)
     set.to_csv('setfile.set', header=False, index=False)
-"""
-
-datafile = csvfile.values.tolist()
-
-print("This is datafile")
-print(datafile)
-
-a = 1
-
-for i in datafile:
-    print(i[a])
-
-
